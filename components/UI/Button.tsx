@@ -8,7 +8,8 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { GlobalStyles } from "../../constants/styles";
+import { Theme } from "../../constants/styles";
+import { useTheme } from "../../store/theme-context";
 
 type Props = {
   children: ReactNode;
@@ -17,6 +18,8 @@ type Props = {
 };
 
 export default function Button({ children, onPress, style }: Props) {
+  const { theme } = useTheme();
+  const styles = makeStyles(theme);
   return (
     <View style={style}>
       <Pressable
@@ -31,20 +34,22 @@ export default function Button({ children, onPress, style }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  button: {
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    backgroundColor: GlobalStyles.colors.primary400,
-  },
-  buttonText: {
-    color: GlobalStyles.colors.onPrimary,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 14,
-  },
-  pressed: {
-    opacity: 0.75,
-  },
-});
+const makeStyles = (theme: Theme) => {
+  return StyleSheet.create({
+    button: {
+      borderRadius: 10,
+      paddingVertical: 12,
+      paddingHorizontal: 8,
+      backgroundColor: theme.colors.primary400,
+    },
+    buttonText: {
+      color: theme.colors.onPrimary,
+      textAlign: "center",
+      fontWeight: "bold",
+      fontSize: 14,
+    },
+    pressed: {
+      opacity: 0.75,
+    },
+  });
+};

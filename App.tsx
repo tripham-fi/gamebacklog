@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
@@ -8,28 +7,29 @@ import {
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RootBottomTabsParamList, RootStackParamList } from "./constants/types";
 import GameBrowseScreen from "./screens/GameBrowseScreen";
-import { GlobalStyles } from "./constants/styles";
 import { Ionicons } from "@expo/vector-icons";
 import BacklogScreen from "./screens/BacklogScreen";
 import WishlistScreen from "./screens/WishlistScreen";
 import IconButton from "./components/UI/IconButton";
 import GameSearchScreen from "./screens/GameSearchScreen";
 import AppSettingScreen from "./screens/AppSettingScreen";
+import { ThemeProvider, useTheme } from "./store/theme-context";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTabs = createBottomTabNavigator<RootBottomTabsParamList>();
 
 const BacklogOverview = () => {
+  const { isDark, theme } = useTheme();
   return (
     <BottomTabs.Navigator
       screenOptions={{
-        headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-        headerTintColor: "white",
+        headerStyle: { backgroundColor: theme.colors.primary500 },
+        headerTintColor: theme.colors.onPrimary,
         tabBarStyle: {
-          backgroundColor: GlobalStyles.colors.primary500,
+          backgroundColor: theme.colors.surface,
         },
-        tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        tabBarInactiveTintColor: GlobalStyles.colors.text,
+        tabBarActiveTintColor: theme.colors.primary400,
+        tabBarInactiveTintColor: theme.colors.textMuted,
       }}
     >
       <BottomTabs.Screen
@@ -95,17 +95,18 @@ const BacklogOverview = () => {
   );
 };
 
-export default function App() {
+function AppContent() {
+  const { isDark, theme } = useTheme();
   return (
     <>
-      <StatusBar style="light" />
+      <StatusBar style={isDark ? "light" : "dark"} />
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             headerStyle: {
-              backgroundColor: GlobalStyles.colors.primary500,
+              backgroundColor: theme.colors.primary500,
             },
-            headerTintColor: "white",
+            headerTintColor: theme.colors.onPrimary,
           }}
         >
           <Stack.Screen
@@ -126,5 +127,13 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
