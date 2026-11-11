@@ -10,6 +10,7 @@ import { Game } from "../../constants/types";
 import Button from "../UI/Button";
 import { Theme } from "../../constants/styles";
 import { useTheme } from "../../store/theme-context";
+import { useCurrency } from "../../store/currency-context";
 
 interface GameItemProp extends Game {}
 
@@ -20,6 +21,7 @@ export default function GameItem({
   steamRatingPercent,
   thumb,
 }: GameItemProp) {
+  const { format } = useCurrency();
   const { theme } = useTheme();
   const styles = makeStyles(theme);
   return (
@@ -38,8 +40,12 @@ export default function GameItem({
               {title}
             </Text>
             <View style={styles.priceColumn}>
-              <Text style={styles.normalPrice}>${salePrice}</Text>
-              <Text style={styles.salePrice}>${normalPrice}</Text>
+              <Text style={styles.normalPrice}>
+                {format(Number(salePrice))}
+              </Text>
+              <Text style={styles.salePrice}>
+                {format(Number(normalPrice))}
+              </Text>
             </View>
           </View>
         </View>

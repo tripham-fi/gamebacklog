@@ -14,6 +14,7 @@ import IconButton from "./components/UI/IconButton";
 import GameSearchScreen from "./screens/GameSearchScreen";
 import AppSettingScreen from "./screens/AppSettingScreen";
 import { ThemeProvider, useTheme } from "./store/theme-context";
+import { CurrencyProvider } from "./store/currency-context";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTabs = createBottomTabNavigator<RootBottomTabsParamList>();
@@ -133,7 +134,9 @@ function AppContent() {
 export default function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <CurrencyProvider>
+        <AppContent />
+      </CurrencyProvider>
     </ThemeProvider>
   );
 }

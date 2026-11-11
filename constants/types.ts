@@ -24,3 +24,25 @@ export type Game = {
   lastChange: number;
   thumb: string;
 };
+
+export type currencyRate = {
+  date: Date;
+  base: string;
+  quote: string;
+  rate: number
+}
+
+export type ErrorResult = {
+  status: number;
+  message: string;
+};
+
+export class ApiError extends Error {
+  status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+    this.name = "ApiError";
+  }
+}
