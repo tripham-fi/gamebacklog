@@ -1,5 +1,5 @@
 // components/UI/Dropdown.tsx
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import {
   FlatList,
   Modal,
@@ -11,8 +11,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "../../constants/styles";
 import { useTheme } from "../../store/theme-context";
-
-type Option = { code: string; label: string };
+import { Option } from "../../constants/types";
 
 type Props = {
   label: string;
@@ -20,6 +19,7 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
+  renderValue?: (item: Option | undefined) => ReactNode;
 };
 
 export default function DropdownMenu({
@@ -28,6 +28,7 @@ export default function DropdownMenu({
   value,
   onChange,
   disabled,
+  renderValue,
 }: Props) {
   const { theme } = useTheme();
   const styles = makeStyles(theme);
@@ -44,7 +45,11 @@ export default function DropdownMenu({
         disabled={disabled}
       >
         <Text style={styles.fieldText}>
-          {selected ? `${selected.code} · ${selected.label}` : "Select"}
+          {renderValue
+            ? renderValue(selected)
+            : selected
+              ? `${selected.code} · ${selected.label}`
+              : "Select"}
         </Text>
         <Ionicons
           name="chevron-down"
@@ -79,7 +84,7 @@ export default function DropdownMenu({
                       item.code === value && styles.optionSelected,
                     ]}
                   >
-                    {item.code} · {item.label}
+                    {item.label}
                   </Text>
                   {item.code === value && (
                     <Ionicons

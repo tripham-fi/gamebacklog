@@ -6,11 +6,20 @@ import { useTheme } from "../../store/theme-context";
 import { useEffect, useState } from "react";
 import { Game } from "../../constants/types";
 import { fetchDeals } from "../../api/game";
+import { DealsRequest } from "../../constants/requests";
 
 export default function GameOutput() {
   const { theme } = useTheme();
   const styles = makeStyles(theme);
   const [games, setGames] = useState<Game[]>([]);
+  const [filter, setFilter] = useState<DealsRequest>({
+    storeID: "1",
+    pageSize: "5",
+    upperPrice: "15",
+    onSale: "1",
+    desc: "1",
+    sortBy: "DealRating",
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +30,7 @@ export default function GameOutput() {
         setLoading(true);
         setError(null);
 
-        const data = await fetchDeals();
+        const data = await fetchDeals(filter);
 
         if (!cancelled) {
           setGames(data);
@@ -42,7 +51,7 @@ export default function GameOutput() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [filter]);
 
   if (loading) {
     return (
@@ -54,7 +63,7 @@ export default function GameOutput() {
 
   return (
     <View style={styles.container}>
-      <GameHeader />
+      <GameHeader filter={filter} onApply={(e) => setFilter(e)} />
       {error ? (
         <View style={[styles.container, styles.center]}>
           <Text style={styles.error}>{error}</Text>

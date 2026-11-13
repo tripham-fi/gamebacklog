@@ -10,6 +10,8 @@ export type RootBottomTabsParamList = {
   AppSetting: undefined;
 };
 
+export type Option = { code: string; label: string };
+
 export type Game = {
   gameID: string;
   dealID: string;

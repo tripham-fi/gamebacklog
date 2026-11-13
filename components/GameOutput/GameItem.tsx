@@ -11,6 +11,7 @@ import Button from "../UI/Button";
 import { Theme } from "../../constants/styles";
 import { useTheme } from "../../store/theme-context";
 import { useCurrency } from "../../store/currency-context";
+import { getDiscountedPercentage } from "../../uti/GameUtils";
 
 interface GameItemProp extends Game {}
 
@@ -18,7 +19,6 @@ export default function GameItem({
   title,
   salePrice,
   normalPrice,
-  steamRatingPercent,
   thumb,
 }: GameItemProp) {
   const { format } = useCurrency();
@@ -34,18 +34,21 @@ export default function GameItem({
           <Image source={{ uri: thumb }} style={styles.thumb} />
           <View style={styles.summary}>
             <View style={styles.badge}>
-              <Text style={styles.badgeText}>-{steamRatingPercent}</Text>
+              <Text style={styles.badgeText}>
+                {getDiscountedPercentage(
+                  Number(normalPrice),
+                  Number(salePrice),
+                )}
+              </Text>
             </View>
             <Text style={styles.title} numberOfLines={2}>
               {title}
             </Text>
             <View style={styles.priceColumn}>
               <Text style={styles.normalPrice}>
-                {format(Number(salePrice))}
-              </Text>
-              <Text style={styles.salePrice}>
                 {format(Number(normalPrice))}
               </Text>
+              <Text style={styles.salePrice}>{format(Number(salePrice))}</Text>
             </View>
           </View>
         </View>
