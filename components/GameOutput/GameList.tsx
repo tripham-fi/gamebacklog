@@ -1,12 +1,12 @@
 import { FlatList, ListRenderItemInfo, Text } from "react-native";
-import { Game } from "../../constants/types";
+import { Game, GameCardData } from "../../constants/types";
 import GameItem from "./GameItem";
 
 interface GameListProp {
-  games: Game[];
+  games: GameCardData[];
 }
 
-function renderGameItem(itemData: ListRenderItemInfo<Game>) {
+function renderGameItem(itemData: ListRenderItemInfo<GameCardData>) {
   return <GameItem {...itemData.item} />;
 }
 

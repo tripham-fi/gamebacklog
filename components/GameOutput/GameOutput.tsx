@@ -7,11 +7,12 @@ import { useEffect, useState } from "react";
 import { Game } from "../../constants/types";
 import { fetchDeals } from "../../api/game";
 import { DealsRequest } from "../../constants/requests";
+import { fromDeal } from "../../uti/GameUtils";
 
 export default function GameOutput() {
   const { theme } = useTheme();
   const styles = makeStyles(theme);
-  const [games, setGames] = useState<Game[]>([]);
+  const [deals, setDeals] = useState<Game[]>([]);
   const [filter, setFilter] = useState<DealsRequest>({
     storeID: "1",
     pageSize: "5",
@@ -33,7 +34,7 @@ export default function GameOutput() {
         const data = await fetchDeals(filter);
 
         if (!cancelled) {
-          setGames(data);
+          setDeals(data);
         }
       } catch (e) {
         if (!cancelled) {
@@ -69,7 +70,7 @@ export default function GameOutput() {
           <Text style={styles.error}>{error}</Text>
         </View>
       ) : (
-        <GameList games={games} />
+        <GameList games={deals.map(fromDeal)} />
       )}
     </View>
   );

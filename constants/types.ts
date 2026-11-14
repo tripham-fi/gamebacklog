@@ -27,6 +27,15 @@ export type Game = {
   thumb: string;
 };
 
+export type GameCardData = {
+  dealID: string;
+  gameID: string;
+  title: string;
+  thumb: string;
+  price: number;
+  normalPrice?: number; 
+};
+
 export type currencyRate = {
   date: Date;
   base: string;

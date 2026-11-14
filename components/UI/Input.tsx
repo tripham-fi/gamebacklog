@@ -12,7 +12,7 @@ import { useTheme } from "../../store/theme-context";
 import { Theme } from "../../constants/styles";
 
 interface InputProp extends TextInputProps {
-  label: string;
+  label?: string;
   propStyle?: StyleProp<ViewStyle>;
 }
 
@@ -20,14 +20,20 @@ export default function Input({
   label,
   style,
   propStyle,
+  multiline,
   ...textInputConfigs
 }: InputProp) {
   const { theme } = useTheme();
   const styles = makeStyles(theme);
   return (
     <View style={[styles.inputContainer, propStyle]}>
-      <Text style={styles.label}>{label}</Text>
-      <TextInput {...textInputConfigs} style={[styles.input, style]} />
+      {label && <Text style={styles.label}>{label}</Text>}
+      <TextInput
+        placeholderTextColor={theme.colors.textMuted}
+        {...textInputConfigs}
+        multiline={multiline}
+        style={[styles.input, multiline && styles.inputMultiline, style]}
+      />
     </View>
   );
 }
@@ -45,7 +51,7 @@ const makeStyles = (theme: Theme) => {
     },
     input: {
       borderWidth: 1,
-      borderColor: theme.colors.primary100, 
+      borderColor: theme.colors.primary100,
       color: theme.colors.textMuted,
       padding: 6,
       borderRadius: 6,

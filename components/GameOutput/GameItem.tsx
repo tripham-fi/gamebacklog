@@ -6,24 +6,25 @@ import {
   Text,
   View,
 } from "react-native";
-import { Game } from "../../constants/types";
+import { GameCardData } from "../../constants/types";
 import Button from "../UI/Button";
 import { Theme } from "../../constants/styles";
 import { useTheme } from "../../store/theme-context";
 import { useCurrency } from "../../store/currency-context";
 import { getDiscountedPercentage } from "../../uti/GameUtils";
 
-interface GameItemProp extends Game {}
+interface GameItemProp extends GameCardData {}
 
 export default function GameItem({
   title,
-  salePrice,
+  price,
   normalPrice,
   thumb,
 }: GameItemProp) {
   const { format } = useCurrency();
   const { theme } = useTheme();
   const styles = makeStyles(theme);
+  const hasDiscount = normalPrice !== undefined && normalPrice > price;
   return (
     <View style={styles.card}>
       <Pressable
@@ -33,22 +34,23 @@ export default function GameItem({
         <View style={styles.info}>
           <Image source={{ uri: thumb }} style={styles.thumb} />
           <View style={styles.summary}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>
-                {getDiscountedPercentage(
-                  Number(normalPrice),
-                  Number(salePrice),
-                )}
-              </Text>
-            </View>
+            {hasDiscount && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>
+                  {getDiscountedPercentage(Number(normalPrice), Number(price))}
+                </Text>
+              </View>
+            )}
             <Text style={styles.title} numberOfLines={2}>
               {title}
             </Text>
             <View style={styles.priceColumn}>
-              <Text style={styles.normalPrice}>
-                {format(Number(normalPrice))}
-              </Text>
-              <Text style={styles.salePrice}>{format(Number(salePrice))}</Text>
+              {hasDiscount && (
+                <Text style={styles.normalPrice}>
+                  {format(Number(normalPrice))}
+                </Text>
+              )}
+              <Text style={styles.salePrice}>{format(Number(price))}</Text>
             </View>
           </View>
         </View>
