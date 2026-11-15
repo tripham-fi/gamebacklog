@@ -1,4 +1,4 @@
-import { Game, GameCardData } from "../constants/types";
+import { Game, GameCardData, GameSearchResult } from "../constants/types";
 
 export function getDiscountedPercentage(origin: number, discounted: number) {
   if (origin <= 0) return "-0%";
@@ -17,3 +17,12 @@ export function fromDeal(d: Game): GameCardData {
   };
 }
 
+export function fromSearchResult(g: GameSearchResult): GameCardData {
+  return {
+    dealID: g.gameID,
+    gameID: g.gameID,
+    title: g.external,
+    thumb: g.thumb,
+    price: Number(g.cheapest),
+  };
+}

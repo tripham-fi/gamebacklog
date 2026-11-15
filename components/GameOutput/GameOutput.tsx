@@ -30,6 +30,7 @@ export default function GameOutput() {
       try {
         setLoading(true);
         setError(null);
+        setDeals([]);
 
         const data = await fetchDeals(filter);
 
@@ -54,20 +55,18 @@ export default function GameOutput() {
     };
   }, [filter]);
 
-  if (loading) {
-    return (
-      <View style={[styles.container, styles.center]}>
-        <ActivityIndicator size="large" color={theme.colors.accent500} />
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
-      <GameHeader filter={filter} onApply={(e) => setFilter(e)} />
-      {error ? (
-        <View style={[styles.container, styles.center]}>
-          <Text style={styles.error}>{error}</Text>
+      <GameHeader filter={filter} onApply={setFilter} />
+      {deals.length === 0 ? (
+        <View style={styles.center}>
+          {loading ? (
+            <ActivityIndicator size="large" color={theme.colors.accent500} />
+          ) : error ? (
+            <Text style={styles.error}>{error}</Text>
+          ) : (
+            <Text style={styles.error}>No top deals found</Text>
+          )}
         </View>
       ) : (
         <GameList games={deals.map(fromDeal)} />
@@ -86,6 +85,7 @@ const makeStyles = (theme: Theme) =>
       backgroundColor: theme.colors.primary700,
     },
     center: {
+      flex: 1,
       justifyContent: "center",
       alignItems: "center",
     },

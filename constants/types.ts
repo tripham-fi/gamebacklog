@@ -36,6 +36,15 @@ export type GameCardData = {
   normalPrice?: number; 
 };
 
+export type GameSearchResult = {
+  gameID: string;
+  steamAppID: string | null;
+  cheapest: string;
+  cheapestDealID: string;
+  external: string;
+  thumb: string;
+};
+
 export type currencyRate = {
   date: Date;
   base: string;
