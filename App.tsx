@@ -15,12 +15,13 @@ import GameSearchScreen from "./screens/GameSearchScreen";
 import AppSettingScreen from "./screens/AppSettingScreen";
 import { ThemeProvider, useTheme } from "./store/theme-context";
 import { CurrencyProvider } from "./store/currency-context";
+import DatabaseProvider from "./components/DatabaseProvider";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTabs = createBottomTabNavigator<RootBottomTabsParamList>();
 
 const BacklogOverview = () => {
-  const { isDark, theme } = useTheme();
+  const { theme } = useTheme();
   return (
     <BottomTabs.Navigator
       screenOptions={{
@@ -133,10 +134,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <CurrencyProvider>
-        <AppContent />
-      </CurrencyProvider>
-    </ThemeProvider>
+    <DatabaseProvider>
+      <ThemeProvider>
+        <CurrencyProvider>
+          <AppContent />
+        </CurrencyProvider>
+      </ThemeProvider>
+    </DatabaseProvider>
   );
 }

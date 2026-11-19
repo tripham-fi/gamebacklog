@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1795016041191,
+      "tag": "0000_fixed_terrax",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1795046090970,
+      "tag": "0001_acoustic_stone_men",
+      "breakpoints": true
+    }
+  ]
+}

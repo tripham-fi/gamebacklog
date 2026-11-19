@@ -1,3 +1,6 @@
+export const BACKLOG_STATUSES = ["not_own", "own", "playing", "completed"] as const;
+export type BacklogStatus = (typeof BACKLOG_STATUSES)[number];
+
 export type RootStackParamList = {
   BacklogOverview: undefined;
   SearchGame: undefined;
