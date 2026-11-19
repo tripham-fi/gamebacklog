@@ -16,9 +16,44 @@ import AppSettingScreen from "./screens/AppSettingScreen";
 import { ThemeProvider, useTheme } from "./store/theme-context";
 import { CurrencyProvider } from "./store/currency-context";
 import DatabaseProvider from "./components/DatabaseProvider";
+import Toast, { BaseToast, ToastConfig } from "react-native-toast-message";
+import { Theme } from "./constants/styles";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTabs = createBottomTabNavigator<RootBottomTabsParamList>();
+
+const makeToastConfig = (theme: Theme): ToastConfig => ({
+  success: (props) => (
+    <BaseToast
+      {...props}
+      style={{
+        borderLeftColor: theme.colors.primary400,
+        backgroundColor: theme.colors.surface,
+      }}
+      text1Style={{ color: theme.colors.text, fontSize: 15 }}
+    />
+  ),
+  info: (props) => (
+    <BaseToast
+      {...props}
+      style={{
+        borderLeftColor: theme.colors.accent500,
+        backgroundColor: theme.colors.surface,
+      }}
+      text1Style={{ color: theme.colors.text, fontSize: 15 }}
+    />
+  ),
+  error: (props) => (
+    <BaseToast
+      {...props}
+      style={{
+        borderLeftColor: theme.colors.error500,
+        backgroundColor: theme.colors.surface,
+      }}
+      text1Style={{ color: theme.colors.text, fontSize: 15 }}
+    />
+  ),
+});
 
 const BacklogOverview = () => {
   const { theme } = useTheme();
@@ -99,6 +134,7 @@ const BacklogOverview = () => {
 
 function AppContent() {
   const { isDark, theme } = useTheme();
+  const toastConfig = makeToastConfig(theme);
   return (
     <>
       <StatusBar style={isDark ? "light" : "dark"} />
@@ -128,6 +164,7 @@ function AppContent() {
           />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast config={toastConfig} position="bottom" bottomOffset={110} visibilityTime={1000} />
     </>
   );
 }

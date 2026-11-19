@@ -11,7 +11,10 @@ export const games = sqliteTable("games", {
   targetPrice: real(),
   priceWhenAdded: real(),
   lastPrice: real(),
-  addedAt: text().notNull().$defaultFn(() => new Date().toISOString()),
+  normalPrice: real(),
+  addedAt: text()
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
   completedAt: text(),
 });
 

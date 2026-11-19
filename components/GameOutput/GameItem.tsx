@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Platform,
   Pressable,
@@ -12,6 +13,8 @@ import { Theme } from "../../constants/styles";
 import { useTheme } from "../../store/theme-context";
 import { useCurrency } from "../../store/currency-context";
 import { getDiscountedPercentage } from "../../uti/GameUtils";
+import { addGame } from "../../db/games";
+import Toast from "react-native-toast-message";
 
 interface GameItemProp extends GameCardData {}
 
@@ -20,11 +23,34 @@ export default function GameItem({
   price,
   normalPrice,
   thumb,
+  gameID,
 }: GameItemProp) {
   const { format } = useCurrency();
   const { theme } = useTheme();
   const styles = makeStyles(theme);
   const hasDiscount = normalPrice !== undefined && normalPrice > price;
+  async function handleAddGameToBacklog() {
+    try {
+      const added = await addGame({
+        gameID,
+        title,
+        thumb,
+        priceWhenAdded: price,
+        lastPrice: price,
+        normalPrice: normalPrice ?? null,
+      });
+
+      Toast.show({
+        type: added ? "success" : "info",
+        text1: added ? "Added to backlog" : "Already in your backlog",
+      });
+    } catch (e) {
+      Toast.show({
+        type: "error",
+        text1: "Could not add the game",
+      });
+    }
+  }
   return (
     <View style={styles.card}>
       <Pressable
@@ -56,7 +82,7 @@ export default function GameItem({
         </View>
 
         <View style={styles.buttonContainer}>
-          <Button onPress={() => console.log("Adding")}>Add to backlog</Button>
+          <Button onPress={handleAddGameToBacklog}>Add to backlog</Button>
         </View>
       </Pressable>
     </View>
